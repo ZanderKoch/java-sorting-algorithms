@@ -89,21 +89,65 @@ public class Driver {
     
     public static class Bubble{
         public static void sort(ArrayList<Integer> list){
-            System.out.println("bubblesorting " 
+            System.out.println("bubble sorting " 
                     + Integer.toString(list.size())
                     + " items");
             ArrayList<Integer> sortingList = (ArrayList<Integer>)list.clone();
             
             long startTime = System.currentTimeMillis();
+            
             //each time outer loop finishes the largest number will have been
-            //mooved to array's size - i:th position by the inner loop
+            //moved to array's size - i:th position by the inner loop
             for(int i = 0; i < sortingList.size()-1; i++ ){
-                //loops through 
+                //loops through array "bubbling" largest number untill it
+                //reaches the limit set by the outer loop
                 for(int j; j < sortingList.size() - i - 1; j++){
                     if(sortingList.get(j) > sortingList.get(j+1)){
                         int temp = sortingList.get(j);
                         sortingList.set(j, sortingList.get(j+1));
                         sortingList.set(j+1, temp);
+                    }
+                }
+            }
+             
+            long elapsedTime = System.currentTimeMillis() - startTime;
+            System.out.println("milliseconds elapsed:"
+                    + String.valueOf(elapsedTime));
+        }
+    }
+    
+    public static class Insertion{
+        public static void sort(ArrayList<Integer> list){
+            System.out.println("insertionsorting " 
+                    + Integer.toString(list.size())
+                    + " items");
+            ArrayList<Integer> sortingList = (ArrayList<Integer>)list.clone();
+            
+            long startTime = System.currentTimeMillis();
+            
+            //i refers to the index of the array up to which it is sorted
+            for(int i = 0; i > sortingList.size()-2; i++){
+                //if the element to the right of the sorting point is smaller:
+                if(sortingList.get(i+1) < sortingList.get(i)){
+                    //element[i+1] neeeds to be saved
+                    int temp = sortingList.get(i+1);
+                    /*"shuffle" element[i+1] until it has passed all elements
+                    left of it (sorting point refers to where it ends but since)
+                    arrays are zero indexed +1 needs to be added ()*/
+                    for(int j = 0; j < i + 1; j++ ){
+                        //if element j steps left of sorted limit is larger
+                        //than value to be moved:
+                        if(sortingList.get(i-j) > temp){
+                            //move it to right with overwrite
+                            sortingList.set(i - j + 1, sortingList.get(i - j));
+                        }
+                        //it went past the values larger than it and since it's
+                        //already been moving the ones before it right it's okay
+                        //to everwrite
+                        else{
+                          sortingList.set(i - j, temp);
+                          break; //done, move sortpoint forward
+                        }
                     }
                 }
             }
